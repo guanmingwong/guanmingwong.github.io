@@ -1,0 +1,109 @@
+
+* {box-sizing: border-box;}
+
+head, body {background-color: #FFFFFF; font-family: Tahoma, Geneva, sans-serif;}
+
+h1 {font-size: 18px; font-weight: bold;}
+h2 {font-size: 15px; font-weight: bold;}
+h3 {font-size: 12px; font-weight: bold;}
+p, form {font-size: 12px;}
+
+input, select {
+	width: 100%;
+	padding: 3px;
+	border: 1px solid var(--colorg);
+	border-radius: 3px;
+	resize: vertical;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 12px;}
+
+input:focus {background-color: var(--colorg);}
+
+.column {float: left; width: 33.33%;}
+.col-img {float: left; width: 60%;}
+.col-txt {float: left; width: 40%;}
+.col-left {float: left; width: 70%;}
+.col-right {float: left; width: 30%;}
+
+header, footer, .column, summary, datapanel {
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	text-align: left;}
+
+.col-img, .col-txt, .col-left, .col-right {
+	padding-left: 0px;
+	padding-right: 12px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	text-align: left;}
+
+.row {clear: left;}
+
+header {background-color: var(--color1); color: #FFFFFF;}
+footer {background-color: var(--color2); color: #FFFFFF;}
+
+summary {
+	float: left;
+	width: 450px;
+	/* width: 45%; */
+	font-size: 12px;
+	font-weight: bold;
+	color: black;}
+
+charts {float: left; /* width: 55%; */}
+datapanel {float: left; width: 100%;}
+
+section:after {
+	content: "";
+	display: table;
+	clear: both;}
+	
+hr.solid {border-top: 1px solid;}
+
+button {
+	width: 100%;
+	border: none;
+	border-radius: 6px;
+	background-color: var(--color3);
+	color: #FFFFFF;
+	padding: 12px 36px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 15px;
+	font-weight:bold;}
+
+button:hover {background-color: var(--colorg); color: var(--color3);}
+
+/* Responsive layout - makes the columns / boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 750px) {summary, charts, .column {width: 100%; height: auto;}}
+
+table {
+	margin: 0 auto;
+	border: 0px solid #FFFFFF;
+	border-color: #FFFFFF;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 6px;
+	padding-bottom: 12px;
+	font-family: Tahoma, Geneva, sans-serif;
+	font-size: 12px;}
+
+th {color: var(--color2);}
+
+th, td {
+	border: 0px solid #FFFFFF;
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	text-align: center;
+	font-weight: bold;}
+
+td {
+	background-color: #FFFFFF;
+	font-weight: lighter;
+	color: #303030;}
