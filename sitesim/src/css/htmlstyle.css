@@ -78,6 +78,37 @@ button {
 
 button:hover {background-color: var(--colorg); color: var(--color3);}
 
+.slidecontainer {width: 100%;}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 6px;
+  background: var(--colorg);
+  outline: none;
+  opacity: 0.45;
+  -webkit-transition: .3s;
+  transition: opacity .3s;}
+
+.slider:hover {opacity: 0.75;}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #000000;
+  cursor: pointer;}
+
+.slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #000000;
+  cursor: pointer;}
+
 /* Responsive layout - makes the columns / boxes stack on top of each other instead of next to each other, on small screens */
 @media (max-width: 750px) {summary, charts, .column {width: 100%; height: auto;}}
 
