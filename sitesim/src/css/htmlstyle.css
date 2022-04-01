@@ -20,19 +20,21 @@ input, select {
 input:focus {background-color: var(--colorg);}
 
 .column {float: left; width: 33.33%;}
+.col-dbl {float: left; width: 66.66%;}
 .col-img {float: left; width: 60%;}
 .col-txt {float: left; width: 40%;}
-.col-left {float: left; width: 70%;}
-.col-right {float: left; width: 30%;}
+.col-equal {float: left; width: 50%;}
+.col-large {float: left; width: 70%;}
+.col-small {float: left; width: 30%;}
 
-header, footer, .column, summary, datapanel {
+header, footer, .column, .col-dbl, summary, charts, datapanel {
 	padding-left: 6px;
-	padding-right: 6px;
+	padding-right: 12px;
 	padding-top: 6px;
 	padding-bottom: 6px;
 	text-align: left;}
 
-.col-img, .col-txt, .col-left, .col-right {
+.col-img, .col-txt, .col-equal, .col-large, .col-small {
 	padding-left: 0px;
 	padding-right: 12px;
 	padding-top: 6px;
@@ -46,17 +48,18 @@ footer {background-color: var(--color2); color: #FFFFFF;}
 
 summary {
 	float: left;
-	width: 450px;
+	width: 480px;
 	/* width: 45%; */
 	font-size: 12px;
 	font-weight: bold;
 	color: black;}
 
-charts {float: left; /* width: 55%; */}
+charts {float: left; width: 510px; /* width: 55%; */}
+canvas {float: left; width: 510px;}
 datapanel {float: left; width: 100%;}
 
 section:after {
-	content: "";
+	content: '';
 	display: table;
 	clear: both;}
 
@@ -112,7 +115,7 @@ button:hover {background-color: var(--colorg); color: var(--color3);}
 	cursor: pointer;}
 
 /* Responsive layout - makes the columns / boxes stack on top of each other instead of next to each other, on small screens */
-@media (max-width: 750px) {summary, charts, .column {width: 100%; height: auto;}}
+@media (max-width: 750px) {summary, charts, .column, .col-dbl {width: 100%; height: auto;}}
 
 table {
 	margin: 0 auto;
