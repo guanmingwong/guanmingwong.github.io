@@ -26,10 +26,9 @@ input:focus {background-color: var(--colorg);}
 .col-equal {float: left; width: 50%;}
 .col-large {float: left; width: 70%;}
 .col-small {float: left; width: 30%;}
-.col-a {float: left; width: 15%;}
-.col-b {float: left; width: 15%;}
-.col-c {float: left; width: 55%;}
-.col-d {float: left; width: 15%;}
+.col-l {float: left; width: 25%;}
+.col-m {float: left; width: 45%;}
+.col-r {float: left; width: 30%;}
 
 header, footer, .column, .col-dbl, summary, charts, datapanel {
 	padding-left: 6px;
@@ -38,12 +37,15 @@ header, footer, .column, .col-dbl, summary, charts, datapanel {
 	padding-bottom: 6px;
 	text-align: left;}
 
-.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-a, .col-b, .col-c, .col-d {
+.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-m, .col-r {
 	padding-left: 0px;
 	padding-right: 12px;
 	padding-top: 6px;
-	padding-bottom: 6px;
-	text-align: left;}
+	padding-bottom: 6px;}
+
+.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-r {text-align: left;}
+
+.col-m {text-align: center;}
 
 .row {clear: left;}
 
