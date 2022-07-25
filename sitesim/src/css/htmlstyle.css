@@ -136,7 +136,7 @@ table {
 
 th {color: var(--color2);}
 
-th, td {
+th, td, td.collapsed {
 	border: 0px solid #FFFFFF;
 	padding-left: 6px;
 	padding-right: 6px;
