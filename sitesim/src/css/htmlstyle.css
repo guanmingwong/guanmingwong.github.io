@@ -27,8 +27,8 @@ input:focus {background-color: var(--colorg);}
 .col-large {float: left; width: 70%;}
 .col-small {float: left; width: 30%;}
 .col-l {float: left; width: 25%;}
-.col-m {float: left; width: 45%;}
-.col-r {float: left; width: 30%;}
+.col-m {float: left; width: 50%;}
+.col-r {float: left; width: 25%;}
 
 header, footer, .column, .col-dbl, summary, charts, datapanel {
 	padding-left: 6px;
