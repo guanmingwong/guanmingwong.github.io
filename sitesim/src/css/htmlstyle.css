@@ -29,6 +29,7 @@ input:focus {background-color: var(--colorg);}
 .col-l {float: left; width: 25%;}
 .col-m {float: left; width: 50%;}
 .col-r {float: left; width: 25%;}
+.chart-tile {float: left; width: 180px;}
 
 header, footer, .column, .col-dbl, summary, charts, datapanel {
 	padding-left: 6px;
@@ -122,6 +123,7 @@ button:hover {background-color: var(--colorg); color: var(--color3);}
 
 /* Responsive layout - makes the columns / boxes stack on top of each other instead of next to each other, on small screens */
 @media (max-width: 750px) {summary, charts, .column, .col-dbl {width: 100%; height: auto;}}
+@media (max-width: 360px) {.chart-tile {width: 100%; height: auto;}}
 
 table {
 	margin: 0 auto;
