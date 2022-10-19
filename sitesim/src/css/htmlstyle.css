@@ -29,7 +29,7 @@ input:focus {background-color: var(--colorg);}
 .col-l {float: left; width: 25%;}
 .col-m {float: left; width: 50%;}
 .col-r {float: left; width: 25%;}
-.chart-tile {float: left; width: 180px;}
+.chart-tile {float: left; padding-right: 30px;}
 
 header, footer, .column, .col-dbl, summary, charts, datapanel {
 	padding-left: 6px;
