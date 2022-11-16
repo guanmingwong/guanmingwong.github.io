@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>SiteSim (v0.1.2) 2020-2022</title>
+<style id='displayCSS'>
+:root {
+	--color1: #598234;
+	--color2: #AEBD38;
+	--color3: #68829E;
+	--colorg: #F0F0F0;
+	--font_family: Tahoma, Geneva, sans-serif;
+}
+
+* {box-sizing: border-box;}
+
+head, body {background-color: #FFFFFF; font-family: var(--font_family);}
+
+h1 {font-size: 18px; font-weight: bold;}
+h2 {font-size: 15px; font-weight: bold;}
+h3 {font-size: 12px; font-weight: bold;}
+p, form {font-size: 12px;}
+
+input, select {
+	width: 100%;
+	padding: 3px;
+	border: 1px solid var(--colorg);
+	border-radius: 3px;
+	resize: vertical;
+	font-family: var(--font_family);
+	font-size: 12px;}
+
+input:focus {background-color: var(--colorg);}
+
+.column {float: left; width: 33.33%;}
+.col-dbl {float: left; width: 66.66%;}
+.col-img {float: left; width: 60%;}
+.col-txt {float: left; width: 40%;}
+.col-equal {float: left; width: 50%;}
+.col-large {float: left; width: 70%;}
+.col-small {float: left; width: 30%;}
+.col-l {float: left; width: 25%;}
+.col-m {float: left; width: 50%;}
+.col-r {float: left; width: 25%;}
+.chart-tile {float: left; padding-right: 15px;}
+
+header, footer, .column, .col-dbl, summary, charts, datapanel {
+	padding-left: 6px;
+	padding-right: 12px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	text-align: left;}
+
+.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-m, .col-r {
+	padding-left: 0px;
+	padding-right: 12px;
+	padding-top: 6px;
+	padding-bottom: 6px;}
+
+.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-r {text-align: left;}
+
+.col-m {text-align: center;}
+
+.row {clear: left;}
+
+header {background-color: var(--color1); color: #FFFFFF;}
+footer {background-color: var(--color2); color: #FFFFFF;}
+
+summary {
+	float: left;
+	width: 480px;
+	/* width: 45%; */
+	font-size: 12px;
+	font-weight: bold;
+	color: black;}
+
+charts {float: left; width: 510px; /* width: 55%; */}
+canvas {float: left; width: 510px;}
+datapanel {float: left; width: 100%;}
+
+section:after {
+	content: '';
+	display: table;
+	clear: both;}
+
+.spacer {clear: both; height: 0px;}
+
+hr.solid {border-top: 1px solid;}
+
+a:link {text-decoration: none;}
+a:visited {text-decoration: none;}
+a:hover {text-decoration: underline;}
+a:active {text-decoration: underline;}
+
+button {
+	width: 100%;
+	border: none;
+	border-radius: 6px;
+	background-color: var(--color3);
+	color: #FFFFFF;
+	padding: 12px 36px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-family: var(--font_family);
+	font-size: 15px;
+	font-weight:bold;}
+
+button:hover {background-color: var(--colorg); color: var(--color3);}
+
+.slidecontainer {width: 100%;}
+
+.slider {
+	-webkit-appearance: none;
+	width: 100%;
+	height: 6px;
+	border-radius: 6px;
+	background: var(--colorg);
+	outline: none;
+	opacity: 0.45;
+	-webkit-transition: .3s;
+	transition: opacity .3s;}
+
+.slider:hover {opacity: 0.75;}
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #000000;
+	cursor: pointer;}
+
+.slider::-moz-range-thumb {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #000000;
+	cursor: pointer;}
+
+/* Responsive layout - makes the columns / boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 750px) {summary, charts, .column, .col-dbl {width: 100%; height: auto;}}
+@media (max-width: 360px) {.chart-tile {width: 100%; height: auto;}}
+
+table {
+	margin: 0 auto;
+	border: 0px solid #FFFFFF;
+	border-color: #FFFFFF;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 6px;
+	padding-bottom: 24px;
+	font-family: var(--font_family);
+	font-size: 12px;}
+
+th {color: var(--color2);}
+
+th, td, td.collapsed {
+	border: 0px solid #FFFFFF;
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	text-align: center;
+	font-weight: bold;}
+
+td {
+	background-color: #FFFFFF;
+	font-weight: lighter;
+	color: #303030;}
+</style>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+	<script src='https://www.gstatic.com/charts/loader.js'></script>
+	<script>
+		google.charts.load('current', {packages: ['corechart', 'bar']});
+		google.charts.setOnLoadCallback(drawChart);
+		function drawChart() {
+
+		var chart_animation = {duration:500,easing:'out',startup:true};
+		var font_size = 9.0;
+		var bar_height = 36;
+		var bar_width = 20;
+		var offset_x = 30;
+		var offset_y = 30;
+
+		var bldg_cost_array = [["Scope", "Cost ($,000)"], ["General Logistics", 3140.78], ["Pitched Roofs", 1498.8], ["Foundations & Substructure", 1362.09], ["Metal Envelope", 1111.79], ["MEPF Systems", 1089.68], ["Site Preparation", 726.45], ["RC Walls & Windows", 83.54], ["Offices", 40.5], ["Flat Roofs", 27.0]];
+		var max_bldg_cost = 3140.78;
+		var data_donut1 = google.visualization.arrayToDataTable(bldg_cost_array);
+		var options_donut1 = {
+			animation: chart_animation,
+			width: 540,
+			height: 330,
+			chartArea: {left:45,top:6,width:480,height:300},
+			fontName: 'Tahoma',
+			fontSize: 12.0,
+			titleTextStyle: {color:'#68829E'},
+			title: 'Build Cost Breakdown ($,000)',
+			pieSliceTextStyle: {color:'black'},
+			pieHole: 0.60,
+			colors: ["#FFB44B", "#FFA596", "#D8D8D8", "#F0D2B4", "#C0C0C0", "#F0F0F0", "#E1E14B", "#E1A52D", "#E1E1E1"]
+		};
+		var chart_donut1 = new google.visualization.PieChart(document.getElementById('build_cost_chart'));
+			max_bldg_cost > 0 ? chart_donut1.draw(data_donut1, options_donut1) : null;
+
+		var data_array0 = [["Scope", "Percentage"], ["Area 2093.85 sqm., Border 225.6 m", 100.0]];
+		var data_pie0 = google.visualization.arrayToDataTable(data_array0);
+		var options_pie0 = {
+			animation: chart_animation,
+			width: 285.0,
+			height: 315.0,
+			chartArea: {left:offset_x/2,top:offset_y,width:285.0,height:315.0},
+			fontName: 'Tahoma',
+			fontSize: font_size,
+			titleTextStyle: {color:'#000000'},
+			title: 'General Logistics\n3140.78 ($,000)',
+			pieSliceText: 'none',
+			pieHole: 0.06,
+			colors: ["#FFB44B"],
+			legend: 'none'
+		};
+		var chart_pie0 = new google.visualization.PieChart(document.getElementById('modularity_chart0'));
+			chart_pie0.draw(data_pie0, options_pie0);
+
+		var data_array1 = [["Scope", "Percentage"], ["Area 102.99 sqm., Border 54.63 m", 33.33], ["Area 1019.08 sqm., Border 128.37 m", 66.67]];
+		var data_pie1 = google.visualization.arrayToDataTable(data_array1);
+		var options_pie1 = {
+			animation: chart_animation,
+			width: 189.0,
+			height: 219.0,
+			chartArea: {left:offset_x/2,top:offset_y,width:189.0,height:219.0},
+			fontName: 'Tahoma',
+			fontSize: font_size,
+			titleTextStyle: {color:'#000000'},
+			title: 'Pitched Roofs\n1498.8 ($,000)',
+			pieSliceText: 'none',
+			pieHole: 0.06,
+			colors: ["#FFA596", "#FFA596"],
+			legend: 'none'
+		};
+		var chart_pie1 = new google.visualization.PieChart(document.getElementById('modularity_chart1'));
+			chart_pie1.draw(data_pie1, options_pie1);
+
+		var data_array2 = [["Scope", "Percentage"], ["Area 120.6 sqm., Border 66.6 m", 25.0], ["Area 167.35 sqm., Border 60.6 m", 25.0], ["Area 345.6 sqm., Border 81.6 m", 25.0], ["Area 954.71 sqm., Border 165.27 m", 25.0]];
+		var data_pie2 = google.visualization.arrayToDataTable(data_array2);
+		var options_pie2 = {
+			animation: chart_animation,
+			width: 165.0,
+			height: 195.0,
+			chartArea: {left:offset_x/2,top:offset_y,width:165.0,height:195.0},
+			fontName: 'Tahoma',
+			fontSize: font_size,
+			titleTextStyle: {color:'#000000'},
+			title: 'Metal Envelope\n1111.79 ($,000)',
+			pieSliceText: 'none',
+			pieHole: 0.06,
+			colors: ["#F0D2B4", "#F0D2B4", "#F0D2B4", "#F0D2B4"],
+			legend: 'none'
+		};
+		var chart_pie2 = new google.visualization.PieChart(document.getElementById('modularity_chart2'));
+			chart_pie2.draw(data_pie2, options_pie2);
+
+		var data_array3 = [["Scope", "Percentage"], ["Area 4.05 sqm., Border 18.94 m", 12.5], ["Area 7.64 sqm., Border 12.41 m", 12.5], ["Area 9.11 sqm., Border 28.42 m", 12.5], ["Area 12.61 sqm., Border 14.62 m", 12.5], ["Area 15.19 sqm., Border 15.77 m", 12.5], ["Area 27.0 sqm., Border 21.0 m", 25.0], ["Area 36.63 sqm., Border 32.53 m", 12.5]];
+		var data_pie3 = google.visualization.arrayToDataTable(data_array3);
+		var options_pie3 = {
+			animation: chart_animation,
+			width: 105.0,
+			height: 135.0,
+			chartArea: {left:offset_x/2,top:offset_y,width:105.0,height:135.0},
+			fontName: 'Tahoma',
+			fontSize: font_size,
+			titleTextStyle: {color:'#000000'},
+			title: 'RC Walls & Windows\n83.54 ($,000)',
+			pieSliceText: 'none',
+			pieHole: 0.06,
+			colors: ["#E1E14B", "#E1E14B", "#E1E14B", "#E1E14B", "#E1E14B", "#E1E14B", "#E1E14B"],
+			legend: 'none'
+		};
+		var chart_pie3 = new google.visualization.PieChart(document.getElementById('modularity_chart3'));
+			chart_pie3.draw(data_pie3, options_pie3);
+
+		var data_array4 = [["Scope", "Percentage"], ["Area 27.0 sqm., Border 21.0 m", 100.0]];
+		var data_pie4 = google.visualization.arrayToDataTable(data_array4);
+		var options_pie4 = {
+			animation: chart_animation,
+			width: 105.0,
+			height: 135.0,
+			chartArea: {left:offset_x/2,top:offset_y,width:105.0,height:135.0},
+			fontName: 'Tahoma',
+			fontSize: font_size,
+			titleTextStyle: {color:'#000000'},
+			title: 'Offices\n40.5 ($,000)',
+			pieSliceText: 'none',
+			pieHole: 0.06,
+			colors: ["#E1A52D"],
+			legend: 'none'
+		};
+		var chart_pie4 = new google.visualization.PieChart(document.getElementById('modularity_chart4'));
+			chart_pie4.draw(data_pie4, options_pie4);
+
+		}
+	</script>
+</head>
+
+<body id='printarea'>
+
+<header><h1>WH-EndS - Building Data</h1></header>
+
+<section>
+	<summary>
+	<h2 style='color: #598234'>Building Summary</h2>
+	<table id='phases' align='left' width='435' border='1' style='text-align:center;'>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Relevant Phase(s)</span></td><td><span style="text-align:right; font-weight:bold">1</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Height (m)</span></td><td><span style="text-align:right; font-weight:bold">15.08</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Footprint Area (sqm.)</span></td><td><span style="text-align:right; font-weight:bold">2093.85</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Below Ground Total Floor Area (sqm.)</span></td><td><span style="text-align:right; font-weight:bold">0.00</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Above Ground Total Floor Area (sqm.)</span></td><td><span style="text-align:right; font-weight:bold">2120.85</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Total Envelope Area (sqm.)</span></td><td><span style="text-align:right; font-weight:bold">3895.64</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Envelope Area : Above Ground Floor Area</span></td><td><span style="text-align:right; font-weight:bold">1.84 : 1</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Construction Cost ($,000)</span></td><td><span style="text-align:right; font-weight:bold">9080.63</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Construction Duration (calendar days)</span></td><td><span style="text-align:right; font-weight:bold">274.0</span></td></tr>
+	</table>
+	</summary>
+	<charts>
+	<h2 style='color: #598234'>Build Cost Breakdown ($,000)</h2>
+		<div class='chart-tile' id='build_cost_chart'></div>
+	</charts>
+</section>
+
+<section>
+	<datapanel>
+	<h2 style='color: #68829E'>Building Modularity Analysis</h2>
+	<div class='row'>
+		<div class='chart-tile' id='modularity_chart0'></div>
+		<div class='chart-tile' id='modularity_chart1'></div>
+		<div class='chart-tile' id='modularity_chart2'></div>
+		<div class='chart-tile' id='modularity_chart3'></div>
+		<div class='chart-tile' id='modularity_chart4'></div>
+	</div>
+	</datapanel>
+</section>
+
+<section>
+	<datapanel>
+	<h2 style='color: #AEBD38'>Building Data by Storey</h2>
+	<table id='data_building' align='left' width='990' border='1' style='text-align:center;'>
+		<tr><th style="background-color: #F0F0F0">Storey</th><th style="background-color: #F0F0F0">Floor Level<br>(m)</th><th style="background-color: #F0F0F0">Common<br>(sqm.)</th><th style="background-color: #F0F0F0">Site Infra<br>(sqm.)</th><th style="background-color: #F0F0F0">General Logistics<br>(sqm.)</th><th style="background-color: #F0F0F0">Offices<br>(sqm.)</th><th style="background-color: #F0F0F0">Amenities<br>(sqm.)</th></tr>
+		<tr><td style="background-color: #FFFFFF">1</td><td style="background-color: #FFFFFF">0.0</td><td style="background-color: #B4B496">0.00</td><td style="background-color: #B478B4">0.00</td><td style="background-color: #FFB44B">2093.85</td><td style="background-color: #E1A52D">0.00</td><td style="background-color: #96693C">0.00</td></tr>
+		<tr><td style="background-color: #FFFFFF">+</td><td style="background-color: #FFFFFF">4.5</td><td style="background-color: #B4B496">0.00</td><td style="background-color: #B478B4">0.00</td><td style="background-color: #FFB44B">0.00</td><td style="background-color: #E1A52D">27.00</td><td style="background-color: #96693C">0.00</td></tr>
+	</table>
+	</datapanel>
+</section>
+
+<footer><p>SiteSim (v0.1.2) 2020-2022</p></footer>
+</body>
+</html>

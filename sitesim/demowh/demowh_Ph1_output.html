@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<title>SiteSim (v0.1.2) 2020-2022</title>
+<style id='displayCSS'>
+:root {
+	--color1: #598234;
+	--color2: #AEBD38;
+	--color3: #68829E;
+	--colorg: #F0F0F0;
+	--font_family: Tahoma, Geneva, sans-serif;
+}
+
+* {box-sizing: border-box;}
+
+head, body {background-color: #FFFFFF; font-family: var(--font_family);}
+
+h1 {font-size: 18px; font-weight: bold;}
+h2 {font-size: 15px; font-weight: bold;}
+h3 {font-size: 12px; font-weight: bold;}
+p, form {font-size: 12px;}
+
+input, select {
+	width: 100%;
+	padding: 3px;
+	border: 1px solid var(--colorg);
+	border-radius: 3px;
+	resize: vertical;
+	font-family: var(--font_family);
+	font-size: 12px;}
+
+input:focus {background-color: var(--colorg);}
+
+.column {float: left; width: 33.33%;}
+.col-dbl {float: left; width: 66.66%;}
+.col-img {float: left; width: 60%;}
+.col-txt {float: left; width: 40%;}
+.col-equal {float: left; width: 50%;}
+.col-large {float: left; width: 70%;}
+.col-small {float: left; width: 30%;}
+.col-l {float: left; width: 25%;}
+.col-m {float: left; width: 50%;}
+.col-r {float: left; width: 25%;}
+.chart-tile {float: left; padding-right: 15px;}
+
+header, footer, .column, .col-dbl, summary, charts, datapanel {
+	padding-left: 6px;
+	padding-right: 12px;
+	padding-top: 6px;
+	padding-bottom: 6px;
+	text-align: left;}
+
+.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-m, .col-r {
+	padding-left: 0px;
+	padding-right: 12px;
+	padding-top: 6px;
+	padding-bottom: 6px;}
+
+.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-r {text-align: left;}
+
+.col-m {text-align: center;}
+
+.row {clear: left;}
+
+header {background-color: var(--color1); color: #FFFFFF;}
+footer {background-color: var(--color2); color: #FFFFFF;}
+
+summary {
+	float: left;
+	width: 480px;
+	/* width: 45%; */
+	font-size: 12px;
+	font-weight: bold;
+	color: black;}
+
+charts {float: left; width: 510px; /* width: 55%; */}
+canvas {float: left; width: 510px;}
+datapanel {float: left; width: 100%;}
+
+section:after {
+	content: '';
+	display: table;
+	clear: both;}
+
+.spacer {clear: both; height: 0px;}
+
+hr.solid {border-top: 1px solid;}
+
+a:link {text-decoration: none;}
+a:visited {text-decoration: none;}
+a:hover {text-decoration: underline;}
+a:active {text-decoration: underline;}
+
+button {
+	width: 100%;
+	border: none;
+	border-radius: 6px;
+	background-color: var(--color3);
+	color: #FFFFFF;
+	padding: 12px 36px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-family: var(--font_family);
+	font-size: 15px;
+	font-weight:bold;}
+
+button:hover {background-color: var(--colorg); color: var(--color3);}
+
+.slidecontainer {width: 100%;}
+
+.slider {
+	-webkit-appearance: none;
+	width: 100%;
+	height: 6px;
+	border-radius: 6px;
+	background: var(--colorg);
+	outline: none;
+	opacity: 0.45;
+	-webkit-transition: .3s;
+	transition: opacity .3s;}
+
+.slider:hover {opacity: 0.75;}
+
+.slider::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	appearance: none;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #000000;
+	cursor: pointer;}
+
+.slider::-moz-range-thumb {
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #000000;
+	cursor: pointer;}
+
+/* Responsive layout - makes the columns / boxes stack on top of each other instead of next to each other, on small screens */
+@media (max-width: 750px) {summary, charts, .column, .col-dbl {width: 100%; height: auto;}}
+@media (max-width: 360px) {.chart-tile {width: 100%; height: auto;}}
+
+table {
+	margin: 0 auto;
+	border: 0px solid #FFFFFF;
+	border-color: #FFFFFF;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 6px;
+	padding-bottom: 24px;
+	font-family: var(--font_family);
+	font-size: 12px;}
+
+th {color: var(--color2);}
+
+th, td, td.collapsed {
+	border: 0px solid #FFFFFF;
+	padding-left: 6px;
+	padding-right: 6px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	text-align: center;
+	font-weight: bold;}
+
+td {
+	background-color: #FFFFFF;
+	font-weight: lighter;
+	color: #303030;}
+</style>
+	<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+	<script src='https://www.gstatic.com/charts/loader.js'></script>
+	<script>
+		google.charts.load('current', {packages: ['corechart', 'bar']});
+		google.charts.setOnLoadCallback(drawChart);
+		function drawChart() {
+
+		var chart_animation = {duration:500,easing:'out',startup:true};
+		var font_size = 12.0;
+		var bar_height = 36;
+		var bar_width = 20;
+		var chart_height = 240;
+		var chart_width = 540;
+		var offset_x = 90;
+		var offset_y = 6;
+
+		var revn_sales_array = [["Asset Class", "Sales Revenue", {role:"style"}, "Share of TDC", {role:"style"}]];
+		var revn_lease_array = [["Asset Class", "Gross Rental Yield", {role:"style"}, "Cap Rate", {role:"style"}], ["GL", 16.62, "#FFB44B", 8.0, "#F0F0F0"], ["Offices", 20.77, "#E1A52D", 8.0, "#F0F0F0"], ["Amenities", 24.93, "#96693C", 8.0, "#F0F0F0"]];
+		var revn_sales_chart_height = (revn_sales_array.length-1)*bar_height;
+		var revn_lease_chart_height = (revn_lease_array.length-1)*bar_height;
+		var data_horz1 = google.visualization.arrayToDataTable(revn_sales_array);
+		var data_horz2 = google.visualization.arrayToDataTable(revn_lease_array);
+		var options_horz1 = {
+			animation: chart_animation,
+			width: chart_width,
+			height: 90+revn_sales_chart_height,
+			chartArea: {left:offset_x,top:offset_y,width:'75%',height:revn_sales_chart_height},
+			fontName: 'Tahoma',
+			fontSize: font_size,
+			bar: {groupWidth: 24},
+			legend: {
+				position: 'none',
+				textStyle: {color:'black',fontName:'Tahoma',fontSize:font_size,bold:false,italic:false}},
+			hAxis: {
+				textStyle: {color:'black',fontName:'Tahoma',fontSize:font_size,bold:false,italic:false},
+				titleTextStyle: {color:'black',fontName:'Tahoma',fontSize:font_size,bold:false,italic:false},
+				title: 'Sales Revenue vs. Share of TDC ($,000)',
+				minValue: 0},
+			vAxis: {
+				textStyle: {color:'black',fontName:'Tahoma',fontSize:font_size,bold:false,italic:false},
+				titleTextStyle: {color:'black',fontName:'Tahoma',fontSize:font_size,bold:false,italic:false}}
+		};
+		var options_horz2 = options_horz1;
+		var chart_horz1 = new google.visualization.BarChart(document.getElementById('revenue_sales_chart'));
+			revn_sales_array.length > 1 ? chart_horz1.draw(data_horz1, options_horz1) : null;
+		var chart_horz2 = new google.visualization.BarChart(document.getElementById('revenue_lease_chart'));
+			options_horz2.height = 90+revn_lease_chart_height;
+			options_horz2.chartArea.height = revn_lease_chart_height;
+			options_horz2.hAxis.title = 'Gross Rental Yield vs. Cap Rate (%)';
+			revn_lease_array.length > 1 ? chart_horz2.draw(data_horz2, options_horz2) : null;
+
+		var cons_cost_array = [["Scope", "Cost ($,000)"], ["General Logistics", 31407.75], ["Pitched Roofs", 14988.03], ["Foundations & Substructure", 13343.19], ["MEPF Systems", 10674.55], ["External", 10620.46], ["Site Preparation", 7116.37], ["Metal Envelope", 5771.48], ["Amenities", 1791.0], ["RC Walls & Windows", 1558.99], ["Flat Roofs", 757.5], ["Green / Landscaped Flat Roofs", 573.75], ["Offices", 405.0], ["Site Infra", 324.0], ["Common", 243.0]];
+		var max_cons_cost = 31407.75;
+		var data_donut1 = google.visualization.arrayToDataTable(cons_cost_array);
+		var options_donut1 = {
+			animation: chart_animation,
+			width: chart_width,
+			height: 330,
+			chartArea: {left:offset_x/2,top:offset_y,width:480,height:300},
+			fontName: 'Tahoma',
+			fontSize: font_size,
+			titleTextStyle: {color:'#68829E'},
+			title: 'Total Build Cost Breakdown ($,000)',
+			pieSliceTextStyle: {color:'black'},
+			pieHole: 0.60,
+			colors: ["#FFB44B", "#FFA596", "#D8D8D8", "#C0C0C0", "#96E14B", "#F0F0F0", "#F0D2B4", "#96693C", "#E1E14B", "#E1E1E1", "#96E14B", "#E1A52D", "#B478B4", "#B4B496"]
+		};
+		var chart_donut1 = new google.visualization.PieChart(document.getElementById('construction_cost_chart'));
+			max_cons_cost > 0 ? chart_donut1.draw(data_donut1, options_donut1) : null;
+
+		var progress_array = [["Phases", "Phase 1", {role:"style"}, "Phase 2", {role:"style"}], ["2022-11", 536.44, "#68829E", 0.0, "#F0F0F0"], ["2022-12", 1789.899, "#68829E", 0.0, "#F0F0F0"], ["2023-1", 4693.253, "#68829E", 0.0, "#F0F0F0"], ["2023-2", 9670.704, "#68829E", 0.0, "#F0F0F0"], ["2023-3", 15659.607, "#68829E", 485.842, "#F0F0F0"], ["2023-4", 19927.015, "#68829E", 2050.589, "#F0F0F0"], ["2023-5", 19927.015, "#68829E", 6038.329, "#F0F0F0"], ["2023-6", 15659.607, "#68829E", 12405.344, "#F0F0F0"], ["2023-7", 9670.704, "#68829E", 17780.944, "#F0F0F0"], ["2023-8", 4693.253, "#68829E", 17780.944, "#F0F0F0"], ["2023-9", 1789.899, "#68829E", 12405.344, "#F0F0F0"], ["2023-10", 536.44, "#68829E", 6038.329, "#F0F0F0"], ["2023-11", 0.0, "#68829E", 2050.589, "#F0F0F0"], ["2023-12", 0.0, "#68829E", 485.842, "#F0F0F0"]];
+		var max_progress_cost = 28064.951;
+		var progress_chart_width = (progress_array.length-1)*bar_width;
+		var data_stacked1 = google.visualization.arrayToDataTable(progress_array);
+		var options_stacked1 = {
+			animation: chart_animation,
+			width: 120+progress_chart_width,
+			height: chart_height,
+			chartArea: {left:offset_x,top:offset_y,width:progress_chart_width,height:'75%'},
+			fontName: 'Tahoma',
+			fontSize: font_size,
+			bar: {groupWidth: 10},
+			isStacked: true,
+			legend: {
+				position: 'none',
+				textStyle: {color:'black',fontName:'Tahoma',fontSize:font_size,bold:false,italic:false}},
+			hAxis: {
+				textStyle: {color:'black',fontName:'Tahoma',fontSize:font_size,bold:false,italic:false},
+				titleTextStyle: {color:'black',fontName:'Tahoma',fontSize:font_size,bold:false,italic:false},
+				textPosition: 'out',
+				slantedText: true,
+				slantedTextAngle: 45,
+				minValue: 0},
+			vAxis: {
+				textStyle: {color:'black',fontName:'Tahoma',fontSize:font_size,bold:false,italic:false},
+				titleTextStyle: {color:'black',fontName:'Tahoma',fontSize:font_size,bold:false,italic:false}}
+		};
+		var chart_stacked1 = new google.visualization.ColumnChart(document.getElementById('monthly_build_cost_chart'));
+			max_progress_cost > 0 ? chart_stacked1.draw(data_stacked1, options_stacked1) : null;
+		}
+	</script>
+</head>
+
+<body id='printarea'>
+
+<header><h1>Dashboard for Proposed Real Estate Development (by A Developer)</h1></header>
+
+<section>
+	<summary>
+	<h2 style='color: #598234'>Development Phases</h2>
+	<table id='phases' align='left' width='435' border='1' style='text-align:center;'>
+		<tr><td style="background-color: #598234"><span style="color: white; text-align:left; font-weight:bold"><a style='color: white' href='demowh_Ph1_output.html'>Phase 1</a></span></td><td style="background-color: #598234"><span style="color: white; text-align:right; font-weight:bold">2022 Mid-Nov to 2023 Mid-Oct</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold"><a style='color: #598234' href='demowh_Ph2_output.html'>Phase 2</a></span></td><td><span style="text-align:right; font-weight:bold">2023 End-Mar to 2023 End-Dec</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold"><a style='color: #598234' href='demowh_PhAll_output.html'>All Phases</a></span></td><td><span style="text-align:right; font-weight:bold">2022 Mid-Nov to 2023 End-Dec</span></td></tr>
+	</table><br>
+	<!-- Add gap -->
+	<div class='spacer'></div>
+	<!-- Add gap -->
+	<h2 style='color: #598234'>Site Summary</h2>
+	<table id='site' align='left' width='435' border='1' style='text-align:center;'>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Perimeter Fencing</span></td><td><span style="text-align:right; font-weight:bold">576.86 m</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Site Area</span></td><td><span style="text-align:right; font-weight:bold">3.94 ha</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Site Coverage</span></td><td><span style="text-align:right; font-weight:bold">55.33 %</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Flat Roof Area</span></td><td><span style="text-align:right; font-weight:bold">1140.00 sqm.</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Total / Gross Floor Area</span></td><td><span style="text-align:right; font-weight:bold">22780.50 sqm.</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Plot Ratio / Floor Area Ratio</span></td><td><span style="text-align:right; font-weight:bold">0.58</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">External Driveway Area</span></td><td><span style="text-align:right; font-weight:bold">5186.08 sqm.</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">External Parking Area</span></td><td><span style="text-align:right; font-weight:bold">3253.50 sqm.</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Hard Paving Area</span></td><td><span style="text-align:right; font-weight:bold">0.00 sqm.</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Greenery Area (Potential)</span></td><td><span style="text-align:right; font-weight:bold">8706.79 sqm.</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #598234; text-align:left; font-weight:bold">Green Coverage (Potential)</span></td><td><span style="text-align:right; font-weight:bold">22.09 %</span></td></tr>
+	</table><br>
+	<!-- Add gap -->
+	<div class='spacer'></div>
+	<!-- Add gap -->
+	<h2 style='color: #598234'>Financial Summary</h2>
+	<table id='financial' align='left' width='435' border='1' style='text-align:center;'>
+		<tr><td style="background-color: #AEBD38"><span style="color: white; text-align:left; font-weight:bold">Total Sales Revenue ($,000)</span></td><td style="background-color: #AEBD38"><span style="color: white; text-align:right; font-weight:bold">0.00</span></td></tr>
+		<tr><td></td><td></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #AEBD38; text-align:left; font-weight:bold">Total Sales Gross Margin</span></td><td><span style="text-align:right; font-weight:bold">N.A.</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #AEBD38; text-align:left; font-weight:bold">General Logistics Gross Rental Yield; vs. 8.0% Cap Rate</span></td><td><span style="text-align:right; font-weight:bold">16.62 %</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #AEBD38; text-align:left; font-weight:bold">Offices Gross Rental Yield; vs. 8.0% Cap Rate</span></td><td><span style="text-align:right; font-weight:bold">20.77 %</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #AEBD38; text-align:left; font-weight:bold">Amenities Gross Rental Yield; vs. 8.0% Cap Rate</span></td><td><span style="text-align:right; font-weight:bold">24.93 %</span></td></tr>
+		<tr><td></td><td></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #68829E; text-align:left; font-weight:bold">Land Cost ($,000)</span></td><td><span style="text-align:right; font-weight:bold">3941.31</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #68829E; text-align:left; font-weight:bold">Build Cost (Site Preparation) ($,000)</span></td><td><span style="text-align:right; font-weight:bold">7116.37</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #68829E; text-align:left; font-weight:bold">Build Cost (Foundations & Substructure) ($,000)</span></td><td><span style="text-align:right; font-weight:bold">13343.19</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #68829E; text-align:left; font-weight:bold">Build Cost (MEPF Systems) ($,000)</span></td><td><span style="text-align:right; font-weight:bold">10674.55</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #68829E; text-align:left; font-weight:bold">Build Cost (Building) ($,000)</span></td><td><span style="text-align:right; font-weight:bold">57820.50</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #68829E; text-align:left; font-weight:bold">Build Cost (External) ($,000)</span></td><td><span style="text-align:right; font-weight:bold">10620.46</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #68829E; text-align:left; font-weight:bold">Contingency on Construction Cost ($,000)</span></td><td><span style="text-align:right; font-weight:bold">4978.75</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #68829E; text-align:left; font-weight:bold">Project Management & Professional Fees ($,000)</span></td><td><span style="text-align:right; font-weight:bold">7966.01</span></td></tr>
+		<tr><td style="background-color: #F0F0F0"><span style="color: #68829E; text-align:left; font-weight:bold">G&A & Relevant Project OPEX ($,000)</span></td><td><span style="text-align:right; font-weight:bold">0.00</span></td></tr>
+		<tr><td></td><td></td></tr>
+		<tr><td style="background-color: #68829E"><span style="color: white; text-align:left; font-weight:bold">Total Development Cost ($,000)</span></td><td style="background-color: #68829E"><span style="color: white; text-align:right; font-weight:bold">116461.16</span></td></tr>
+	</table>
+	</summary>
+	<charts>
+	<h2 style='color: #AEBD38'>Sales Revenue Benchmarking</h2>
+	<div id='revenue_sales_chart'></div><p>No Relevant Data</p>
+	<br>
+	<!-- Add gap -->
+	<div class='spacer'></div>
+	<!-- Add gap -->
+	<h2 style='color: #AEBD38'>Lease Revenue Benchmarking</h2>
+	<div id='revenue_lease_chart'></div>
+	<br>
+	<!-- Add gap -->
+	<div class='spacer'></div>
+	<!-- Add gap -->
+	<h2 style='color: #68829E'>Total Build Cost Breakdown ($,000)</h2>
+	<div id='construction_cost_chart'></div>
+	</charts>
+</section>
+
+<section>
+	<datapanel>
+	<h2 style='color: #68829E'>Estimated Build Cost Distribution by Month ($,000)</h2>
+	<div id='monthly_build_cost_chart'></div>
+	</datapanel>
+</section>
+
+<section>
+	<datapanel>
+	<h2 style='color: #68829E'>Building(s) Summary</h2>
+	<table id='data_project' align='left' width='990' border='1' style='text-align:center;'>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("tr.parent")
+				.css("cursor", "pointer")
+				.attr("title", "Click to expand / collapse")
+				.click(function () {
+					$(this).siblings(".child_" + this.id).toggle();
+				});
+			$("tr[@class^=child_]").hide().children("td");
+		});
+	</script>
+		<tr><td style="color: #68829E; font-weight: bold; background-color: #FFFFFF">Build Cost<br>(Building)<br>($,000)</td><td style="font-weight: bold; background-color: #FFFFFF">57820.50</td><td style="color: #68829E; font-weight: bold; background-color: #FFFFFF"></td><td style="color: #68829E; font-weight: bold; background-color: #FFFFFF">Subtotals><br>($,000)</td><td style="font-weight: bold; background-color: #F0D2B4">5771.48</td><td style="font-weight: bold; background-color: #E1E14B">1558.99</td><td style="font-weight: bold; background-color: #FFA596">14988.03</td><td style="font-weight: bold; background-color: #E1E1E1">757.50</td><td style="font-weight: bold; background-color: #96E14B">573.75</td><td style="font-weight: bold; background-color: #B4B496">243.00</td><td style="font-weight: bold; background-color: #B478B4">324.00</td><td style="font-weight: bold; background-color: #FFB44B">31407.75</td><td style="font-weight: bold; background-color: #E1A52D">405.00</td><td style="font-weight: bold; background-color: #96693C">1791.00</td></tr>
+		<tr><td style="color: #68829E; font-weight: bold; background-color: #FFFFFF"></td><td style="color: #68829E; font-weight: bold; background-color: #FFFFFF"></td><td style="color: #68829E; font-weight: bold; background-color: #FFFFFF"></td><td style="color: #68829E; font-weight: bold; background-color: #FFFFFF">Rate><br>($ / sqm.)</td><td style="font-weight: bold; background-color: #F0D2B4">700.00</td><td style="font-weight: bold; background-color: #E1E14B">600.00</td><td style="font-weight: bold; background-color: #FFA596">700.00</td><td style="font-weight: bold; background-color: #E1E1E1">1000.00</td><td style="font-weight: bold; background-color: #96E14B">1500.00</td><td style="font-weight: bold; background-color: #B4B496">1500.00</td><td style="font-weight: bold; background-color: #B478B4">1500.00</td><td style="font-weight: bold; background-color: #FFB44B">1500.00</td><td style="font-weight: bold; background-color: #E1A52D">1500.00</td><td style="font-weight: bold; background-color: #96693C">1500.00</td></tr>
+		<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+		<tr><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"> </td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"> </td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"> </td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF">Subtotals><br>(sqm.)</td><td style="font-weight: bold; background-color: #F0D2B4">8244.97</td><td style="font-weight: bold; background-color: #E1E14B">2598.32</td><td style="font-weight: bold; background-color: #FFA596">21411.48</td><td style="font-weight: bold; background-color: #E1E1E1">757.50</td><td style="font-weight: bold; background-color: #96E14B">382.50</td><td style="font-weight: bold; background-color: #B4B496">162.00</td><td style="font-weight: bold; background-color: #B478B4">216.00</td><td style="font-weight: bold; background-color: #FFB44B">20938.50</td><td style="font-weight: bold; background-color: #E1A52D">270.00</td><td style="font-weight: bold; background-color: #96693C">1194.00</td></tr>
+		<tr><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"> </td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"> </td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"> </td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF">GFA Split><br>(%)</td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"></td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"></td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"></td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"></td><td style="color: #AEBD38; font-weight: bold; background-color: #FFFFFF"></td><td style="font-weight: bold; background-color: #B4B496">0.71</td><td style="font-weight: bold; background-color: #B478B4">0.95</td><td style="font-weight: bold; background-color: #FFB44B">91.91</td><td style="font-weight: bold; background-color: #E1A52D">1.19</td><td style="font-weight: bold; background-color: #96693C">5.24</td></tr>
+		<tr><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+		<tr><th style="background-color: #F0F0F0">Building Name</th><th style="background-color: #F0F0F0">Building Height<br>(m)</th><th style="background-color: #F0F0F0">Storey No.</th><th style="background-color: #F0F0F0">Basement No.</th><th style="background-color: #F0F0F0">Metal Envelope<br>(sqm.)</th><th style="background-color: #F0F0F0">RC Walls & Windows<br>(sqm.)</th><th style="background-color: #F0F0F0">Pitched Roofs<br>(sqm.)</th><th style="background-color: #F0F0F0">Flat Roofs<br>(sqm.)</th><th style="background-color: #F0F0F0">Green / Landscaped Flat Roofs<br>(sqm.)</th><th style="background-color: #F0F0F0">Common<br>(sqm.)</th><th style="background-color: #F0F0F0">Site Infra<br>(sqm.)</th><th style="background-color: #F0F0F0">General Logistics<br>(sqm.)</th><th style="background-color: #F0F0F0">Offices<br>(sqm.)</th><th style="background-color: #F0F0F0">Amenities<br>(sqm.)</th></tr>
+		<tr><td style="background-color: #FFFFFF"><a style='color: #606060' href='demowh__Amenities.html'>Amenities 1</a></td><td style="background-color: #FFFFFF">12.00</td><td style="background-color: #FFFFFF">2+</td><td style="background-color: #FFFFFF">0</td><td style="background-color: #F0D2B4">0.00</td><td style="background-color: #E1E14B">585.00</td><td style="background-color: #FFA596">0.00</td><td style="background-color: #E1E1E1">265.50</td><td style="background-color: #96E14B">382.50</td><td style="background-color: #B4B496">162.00</td><td style="background-color: #B478B4">0.00</td><td style="background-color: #FFB44B">0.00</td><td style="background-color: #E1A52D">0.00</td><td style="background-color: #96693C">1188.00</td></tr>
+		<tr><td style="background-color: #FFFFFF"><a style='color: #606060' href='demowh__Guardroom.html'>Guardroom 1</a></td><td style="background-color: #FFFFFF">4.50</td><td style="background-color: #FFFFFF">1</td><td style="background-color: #FFFFFF">0</td><td style="background-color: #F0D2B4">0.00</td><td style="background-color: #E1E14B">45.00</td><td style="background-color: #FFA596">0.00</td><td style="background-color: #E1E1E1">6.00</td><td style="background-color: #96E14B">0.00</td><td style="background-color: #B4B496">0.00</td><td style="background-color: #B478B4">0.00</td><td style="background-color: #FFB44B">0.00</td><td style="background-color: #E1A52D">0.00</td><td style="background-color: #96693C">6.00</td></tr>
+		<tr class="parent" id="substation" title="Click to expand / collapse" style="cursor: pointer;"><td class="collapsed" style="background-color: #FFFFFF">SUBSTATION x2</td><td class="collapsed" style="background-color: #FFFFFF">6.00</td><td class="collapsed" style="background-color: #FFFFFF">1</td><td class="collapsed" style="background-color: #FFFFFF">0</td><td class="collapsed" style="background-color: #F0D2B4">0.00</td><td class="collapsed" style="background-color: #E1E14B">576.00</td><td class="collapsed" style="background-color: #FFA596">0.00</td><td class="collapsed" style="background-color: #E1E1E1">216.00</td><td class="collapsed" style="background-color: #96E14B">0.00</td><td class="collapsed" style="background-color: #B4B496">0.00</td><td class="collapsed" style="background-color: #B478B4">216.00</td><td class="collapsed" style="background-color: #FFB44B">0.00</td><td class="collapsed" style="background-color: #E1A52D">0.00</td><td class="collapsed" style="background-color: #96693C">0.00</td></tr>
+		<tr class="child_substation" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__Substation.html'>Substation 1</a></td><td style="background-color: #FFFFFF; font-style: oblique">6.00</td><td style="background-color: #FFFFFF; font-style: oblique">1</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">0.00</td><td style="background-color: #E1E14B; font-style: oblique">288.00</td><td style="background-color: #FFA596; font-style: oblique">0.00</td><td style="background-color: #E1E1E1; font-style: oblique">108.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">108.00</td><td style="background-color: #FFB44B; font-style: oblique">0.00</td><td style="background-color: #E1A52D; font-style: oblique">0.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="child_substation" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__Substation.html'>Substation 2</a></td><td style="background-color: #FFFFFF; font-style: oblique">6.00</td><td style="background-color: #FFFFFF; font-style: oblique">1</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">0.00</td><td style="background-color: #E1E14B; font-style: oblique">288.00</td><td style="background-color: #FFA596; font-style: oblique">0.00</td><td style="background-color: #E1E1E1; font-style: oblique">108.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">108.00</td><td style="background-color: #FFB44B; font-style: oblique">0.00</td><td style="background-color: #E1A52D; font-style: oblique">0.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="parent" id="wh-ends" title="Click to expand / collapse" style="cursor: pointer;"><td class="collapsed" style="background-color: #FFFFFF">WH-ENDS x2</td><td class="collapsed" style="background-color: #FFFFFF">15.08</td><td class="collapsed" style="background-color: #FFFFFF">1+</td><td class="collapsed" style="background-color: #FFFFFF">0</td><td class="collapsed" style="background-color: #F0D2B4">3176.53</td><td class="collapsed" style="background-color: #E1E14B">278.46</td><td class="collapsed" style="background-color: #FFA596">4282.30</td><td class="collapsed" style="background-color: #E1E1E1">54.00</td><td class="collapsed" style="background-color: #96E14B">0.00</td><td class="collapsed" style="background-color: #B4B496">0.00</td><td class="collapsed" style="background-color: #B478B4">0.00</td><td class="collapsed" style="background-color: #FFB44B">4187.70</td><td class="collapsed" style="background-color: #E1A52D">54.00</td><td class="collapsed" style="background-color: #96693C">0.00</td></tr>
+		<tr class="child_wh-ends" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__WH-EndS.html'>WH-EndS 1</a></td><td style="background-color: #FFFFFF; font-style: oblique">15.08</td><td style="background-color: #FFFFFF; font-style: oblique">1+</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">1588.27</td><td style="background-color: #E1E14B; font-style: oblique">139.23</td><td style="background-color: #FFA596; font-style: oblique">2141.15</td><td style="background-color: #E1E1E1; font-style: oblique">27.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">0.00</td><td style="background-color: #FFB44B; font-style: oblique">2093.85</td><td style="background-color: #E1A52D; font-style: oblique">27.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="child_wh-ends" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__WH-EndS.html'>WH-EndS 2</a></td><td style="background-color: #FFFFFF; font-style: oblique">15.08</td><td style="background-color: #FFFFFF; font-style: oblique">1+</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">1588.27</td><td style="background-color: #E1E14B; font-style: oblique">139.23</td><td style="background-color: #FFA596; font-style: oblique">2141.15</td><td style="background-color: #E1E1E1; font-style: oblique">27.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">0.00</td><td style="background-color: #FFB44B; font-style: oblique">2093.85</td><td style="background-color: #E1A52D; font-style: oblique">27.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="parent" id="wh-mid" title="Click to expand / collapse" style="cursor: pointer;"><td class="collapsed" style="background-color: #FFFFFF">WH-MID x8</td><td class="collapsed" style="background-color: #FFFFFF">15.08</td><td class="collapsed" style="background-color: #FFFFFF">1+</td><td class="collapsed" style="background-color: #FFFFFF">0</td><td class="collapsed" style="background-color: #F0D2B4">5068.44</td><td class="collapsed" style="background-color: #E1E14B">1113.85</td><td class="collapsed" style="background-color: #FFA596">17129.18</td><td class="collapsed" style="background-color: #E1E1E1">216.00</td><td class="collapsed" style="background-color: #96E14B">0.00</td><td class="collapsed" style="background-color: #B4B496">0.00</td><td class="collapsed" style="background-color: #B478B4">0.00</td><td class="collapsed" style="background-color: #FFB44B">16750.80</td><td class="collapsed" style="background-color: #E1A52D">216.00</td><td class="collapsed" style="background-color: #96693C">0.00</td></tr>
+		<tr class="child_wh-mid" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__WH-Mid.html'>WH-Mid 1</a></td><td style="background-color: #FFFFFF; font-style: oblique">15.08</td><td style="background-color: #FFFFFF; font-style: oblique">1+</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">633.55</td><td style="background-color: #E1E14B; font-style: oblique">139.23</td><td style="background-color: #FFA596; font-style: oblique">2141.15</td><td style="background-color: #E1E1E1; font-style: oblique">27.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">0.00</td><td style="background-color: #FFB44B; font-style: oblique">2093.85</td><td style="background-color: #E1A52D; font-style: oblique">27.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="child_wh-mid" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__WH-Mid.html'>WH-Mid 2</a></td><td style="background-color: #FFFFFF; font-style: oblique">15.08</td><td style="background-color: #FFFFFF; font-style: oblique">1+</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">633.55</td><td style="background-color: #E1E14B; font-style: oblique">139.23</td><td style="background-color: #FFA596; font-style: oblique">2141.15</td><td style="background-color: #E1E1E1; font-style: oblique">27.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">0.00</td><td style="background-color: #FFB44B; font-style: oblique">2093.85</td><td style="background-color: #E1A52D; font-style: oblique">27.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="child_wh-mid" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__WH-Mid.html'>WH-Mid 3</a></td><td style="background-color: #FFFFFF; font-style: oblique">15.08</td><td style="background-color: #FFFFFF; font-style: oblique">1+</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">633.55</td><td style="background-color: #E1E14B; font-style: oblique">139.23</td><td style="background-color: #FFA596; font-style: oblique">2141.15</td><td style="background-color: #E1E1E1; font-style: oblique">27.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">0.00</td><td style="background-color: #FFB44B; font-style: oblique">2093.85</td><td style="background-color: #E1A52D; font-style: oblique">27.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="child_wh-mid" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__WH-Mid.html'>WH-Mid 4</a></td><td style="background-color: #FFFFFF; font-style: oblique">15.08</td><td style="background-color: #FFFFFF; font-style: oblique">1+</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">633.55</td><td style="background-color: #E1E14B; font-style: oblique">139.23</td><td style="background-color: #FFA596; font-style: oblique">2141.15</td><td style="background-color: #E1E1E1; font-style: oblique">27.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">0.00</td><td style="background-color: #FFB44B; font-style: oblique">2093.85</td><td style="background-color: #E1A52D; font-style: oblique">27.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="child_wh-mid" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__WH-Mid.html'>WH-Mid 5</a></td><td style="background-color: #FFFFFF; font-style: oblique">15.08</td><td style="background-color: #FFFFFF; font-style: oblique">1+</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">633.55</td><td style="background-color: #E1E14B; font-style: oblique">139.23</td><td style="background-color: #FFA596; font-style: oblique">2141.15</td><td style="background-color: #E1E1E1; font-style: oblique">27.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">0.00</td><td style="background-color: #FFB44B; font-style: oblique">2093.85</td><td style="background-color: #E1A52D; font-style: oblique">27.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="child_wh-mid" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__WH-Mid.html'>WH-Mid 6</a></td><td style="background-color: #FFFFFF; font-style: oblique">15.08</td><td style="background-color: #FFFFFF; font-style: oblique">1+</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">633.55</td><td style="background-color: #E1E14B; font-style: oblique">139.23</td><td style="background-color: #FFA596; font-style: oblique">2141.15</td><td style="background-color: #E1E1E1; font-style: oblique">27.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">0.00</td><td style="background-color: #FFB44B; font-style: oblique">2093.85</td><td style="background-color: #E1A52D; font-style: oblique">27.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="child_wh-mid" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__WH-Mid.html'>WH-Mid 7</a></td><td style="background-color: #FFFFFF; font-style: oblique">15.08</td><td style="background-color: #FFFFFF; font-style: oblique">1+</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">633.55</td><td style="background-color: #E1E14B; font-style: oblique">139.23</td><td style="background-color: #FFA596; font-style: oblique">2141.15</td><td style="background-color: #E1E1E1; font-style: oblique">27.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">0.00</td><td style="background-color: #FFB44B; font-style: oblique">2093.85</td><td style="background-color: #E1A52D; font-style: oblique">27.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+		<tr class="child_wh-mid" style="display: none;"><td style="background-color: #FFFFFF; font-style: oblique"><a style='color: #606060' href='demowh__WH-Mid.html'>WH-Mid 8</a></td><td style="background-color: #FFFFFF; font-style: oblique">15.08</td><td style="background-color: #FFFFFF; font-style: oblique">1+</td><td style="background-color: #FFFFFF; font-style: oblique">0</td><td style="background-color: #F0D2B4; font-style: oblique">633.55</td><td style="background-color: #E1E14B; font-style: oblique">139.23</td><td style="background-color: #FFA596; font-style: oblique">2141.15</td><td style="background-color: #E1E1E1; font-style: oblique">27.00</td><td style="background-color: #96E14B; font-style: oblique">0.00</td><td style="background-color: #B4B496; font-style: oblique">0.00</td><td style="background-color: #B478B4; font-style: oblique">0.00</td><td style="background-color: #FFB44B; font-style: oblique">2093.85</td><td style="background-color: #E1A52D; font-style: oblique">27.00</td><td style="background-color: #96693C; font-style: oblique">0.00</td></tr>
+	</table>
+	</datapanel>
+</section>
+
+<footer><p>SiteSim (v0.1.2) 2020-2022</p></footer>
+</body>
+</html>
