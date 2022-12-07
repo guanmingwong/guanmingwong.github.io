@@ -34,6 +34,7 @@ input:focus {background-color: var(--colorg);}
 .chart-tile {float: left; padding-right: 15px;}
 
 header {width: 100%; height: 100%;}
+header.title {min-height: 180px;}
 
 header, footer, .column, .col-dbl, summary, wide, charts, datapanel {padding: 6px;}
 
