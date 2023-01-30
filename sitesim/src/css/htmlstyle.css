@@ -54,7 +54,7 @@ wide {width: 100%;}
 summary, wide {
 	float: left;
 	font-size: 12px;
-	font-weight: bold;
+/* 	font-weight: bold; */
 	color: black;}
 
 canvas, charts {float: left; width: 510px;}
