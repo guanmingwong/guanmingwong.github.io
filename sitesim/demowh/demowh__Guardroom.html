@@ -163,107 +163,7 @@ td {
 </style>
 
 <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
-<script src='https://www.gstatic.com/charts/loader.js'></script>
-<script>
-	google.charts.load('current', {packages: ['corechart', 'bar']});
-	google.charts.setOnLoadCallback(drawChart);
-	function drawChart() {
-
-		var chart_animation = {duration:500,easing:'out',startup:true};
-		var font_size_s = 9.0;
-		var font_size_m = 12.0;
-		var bar_height = 36;
-		var bar_width = 20;
-		var chart_width = 540;
-		var offset_x = 30;
-		var offset_y = 30;
-
-		var compare_cost_array = [["Scope", "WH-EndN", {role:"style"}, "WH-EndS", {role:"style"}, "WH-Mid", {role:"style"}, "Amenities", {role:"style"}, "Substation", {role:"style"}, "Guardroom", {role:"style"}], ["Individually", 8151.61, "#F0F0F0", 8114.23, "#E8E8E8", 7086.08, "#F0F0F0", 4946.53, "#E8E8E8", 681.23, "#F0F0F0", 64.61, "#87D23C"], ["Aggregated", 16303.22, "#F0F0F0", 16228.46, "#E8E8E8", 99205.12, "#F0F0F0", 4946.53, "#E8E8E8", 1362.46, "#F0F0F0", 64.61, "#87D23C"]];
-		var max_compare_cost = 8151.61;
-		var data_stacked1 = google.visualization.arrayToDataTable(compare_cost_array);
-		var options_stacked1 = {
-			animation: chart_animation,
-			width: 480,
-			height: 120,
-			chartArea: {left:90,top:6,width:'75%',height:72},
-			fontName: 'Tahoma',
-			fontSize: font_size_m,
-			bar: {groupWidth: 12},
-			isStacked: true,
-			legend: {
-				position: 'none',
-				textStyle: {color:'black',fontName:'Tahoma',fontSize:font_size_m,bold:false,italic:false}},
-			hAxis: {
-				textStyle: {color:'black',fontName:'Tahoma',fontSize:font_size_m,bold:false,italic:false},
-				titleTextStyle: {color:'black',fontName:'Tahoma',fontSize:font_size_m,bold:false,italic:false},
-//				title: 'Individually vs. Aggregated (%)',
-				minValue: 0},
-			vAxis: {
-				textStyle: {color:'black',fontName:'Tahoma',fontSize:font_size_m,bold:false,italic:false},
-				titleTextStyle: {color:'black',fontName:'Tahoma',fontSize:font_size_m,bold:false,italic:false}}
-		};
-		var chart_stacked1 = new google.visualization.BarChart(document.getElementById('building_cost_comparison_chart'));
-			max_compare_cost > 0 ? chart_stacked1.draw(data_stacked1, options_stacked1) : null;
-
-		var bldg_cost_array = [["Scope", "Cost ($,000)"], ["RC Walls & Windows", 27.0], ["Foundations & Substructure", 9.69], ["Amenities", 9.0], ["MEPF Systems", 7.75], ["Flat Roofs", 6.0], ["Site Preparation", 5.17]];
-		var max_bldg_cost = 27.0;
-		var data_donut1 = google.visualization.arrayToDataTable(bldg_cost_array);
-		var options_donut1 = {
-			animation: chart_animation,
-			width: chart_width,
-			height: 330,
-			chartArea: {left:45,top:6,width:480,height:300},
-			fontName: 'Tahoma',
-			fontSize: font_size_m,
-			titleTextStyle: {color:'black'},
-			title: 'building_cost_breakdown',
-			pieSliceTextStyle: {color:'black'},
-			pieHole: 0.60,
-			colors: ["#E1E14B", "#D8D8D8", "#96693C", "#C0C0C0", "#E1E1E1", "#F0F0F0"]
-		};
-		var chart_donut1 = new google.visualization.PieChart(document.getElementById('build_cost_chart'));
-			max_bldg_cost > 0 ? chart_donut1.draw(data_donut1, options_donut1) : null;
-
-		var data_array0 = [["Scope", "Percentage"], ["Area 9.0 sqm., Border 13.0 m", 50.0], ["Area 13.5 sqm., Border 15.0 m", 50.0]];
-		var data_pie0 = google.visualization.arrayToDataTable(data_array0);
-		var options_pie0 = {
-			animation: chart_animation,
-			width: 285.0,
-			height: 315.0,
-			chartArea: {left:offset_x/2,top:offset_y,width:285.0,height:315.0},
-			fontName: 'Tahoma',
-			fontSize: font_size_s,
-			titleTextStyle: {color:'#000000'},
-			title: 'RC Walls & Windows\n27.0 ($,000)',
-			pieSliceText: 'none',
-			pieHole: 0.06,
-			colors: ["#E1E14B", "#E1E14B"],
-			legend: 'none'
-		};
-		var chart_pie0 = new google.visualization.PieChart(document.getElementById('modularity_chart0'));
-			chart_pie0.draw(data_pie0, options_pie0);
-
-		var data_array1 = [["Scope", "Percentage"], ["Area 6.0 sqm., Border 10.0 m", 100.0]];
-		var data_pie1 = google.visualization.arrayToDataTable(data_array1);
-		var options_pie1 = {
-			animation: chart_animation,
-			width: 165.0,
-			height: 195.0,
-			chartArea: {left:offset_x/2,top:offset_y,width:165.0,height:195.0},
-			fontName: 'Tahoma',
-			fontSize: font_size_s,
-			titleTextStyle: {color:'#000000'},
-			title: 'Amenities\n9.0 ($,000)',
-			pieSliceText: 'none',
-			pieHole: 0.06,
-			colors: ["#96693C"],
-			legend: 'none'
-		};
-		var chart_pie1 = new google.visualization.PieChart(document.getElementById('modularity_chart1'));
-			chart_pie1.draw(data_pie1, options_pie1);
-
-	}
-</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js'></script>
 </head>
 
 <section>
@@ -298,7 +198,114 @@ td {
 		<tr><td width='30px'><img src='data:image/png;base64,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' height='18'></img></td><td><h2 style='text-align:left;'>Build Cost Comparison by Building ($,000)</h2></td></tr>
 	</table><br>
 	<charts style='width:480px;padding:0px;'>
-		<div id='building_cost_comparison_chart'></div>
+	<canvas id='building_cost_comparison_chart' style='height:120px; width:100%'></canvas>
+	<script>
+		new Chart(document.getElementById('building_cost_comparison_chart'), {
+			type: 'horizontalBar',
+			data: {
+				labels: ["Individually", "Aggregated"],
+				datasets: [{
+					label: 'WH-EndN',
+					data: [8151.61, 16303.22],
+					backgroundColor: '#F0F0F0',
+					barThickness: 12,
+					maxBarThickness: 15
+					}, {
+					label: 'WH-EndS',
+					data: [8114.23, 16228.46],
+					backgroundColor: '#E8E8E8',
+					barThickness: 12,
+					maxBarThickness: 15
+					}, {
+					label: 'WH-Mid',
+					data: [7086.08, 99205.12],
+					backgroundColor: '#F0F0F0',
+					barThickness: 12,
+					maxBarThickness: 15
+					}, {
+					label: 'Amenities',
+					data: [4946.53, 4946.53],
+					backgroundColor: '#E8E8E8',
+					barThickness: 12,
+					maxBarThickness: 15
+					}, {
+					label: 'Substation',
+					data: [681.23, 1362.46],
+					backgroundColor: '#F0F0F0',
+					barThickness: 12,
+					maxBarThickness: 15
+					}, {
+					label: 'Guardroom',
+					data: [64.61, 64.61],
+					backgroundColor: '#87D23C',
+					barThickness: 12,
+					maxBarThickness: 15
+				}]
+			},
+			options: {
+				title: {
+					display: false,
+					text: '',
+					padding: 6,
+					position: 'bottom',
+					align: 'center',
+					fontFamily: 'Tahoma',
+					fontColor: '#000000',
+					fontStyle: 'normal',
+					fontSize: 12
+				},
+				legend: {
+					display: false,
+					title: {
+						display: false,
+						text: '',
+						padding: 18,
+						position: 'top',
+						align: 'center',
+						fontFamily: 'Tahoma',
+						fontColor: '#000000',
+						fontStyle: 'normal',
+						fontSize: 15
+					},
+					position: 'bottom',
+					align: 'center',
+					labels: {
+						boxWidth: 12,
+						padding: 6,
+						fontFamily: 'Tahoma',
+						fontColor: '#000000',
+						fontStyle: 'normal',
+						fontSize: 12
+					}
+				},
+				scales: {
+					xAxes: [{
+						stacked: true,
+						ticks: {
+							beginAtZero: true,
+							padding: 6,
+							fontFamily: 'Tahoma',
+							fontColor: '#000000',
+							fontSize: 12
+						}
+					}],
+					yAxes: [{
+						stacked: true,
+						gridLines: {
+							display: false
+						},
+						ticks: {
+							beginAtZero: true,
+							padding: 6,
+							fontFamily: 'Tahoma',
+							fontColor: '#000000',
+							fontSize: 12
+						}
+					}]
+				}
+			}
+		});
+	</script>
 	</charts>
 	</summary>
 	<charts>
@@ -306,7 +313,49 @@ td {
 		<tr><td width='30px'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAwhJREFUaEPtmY+xDEEQxr8XARkggkcEiAARIAJEgAgQASJABJ4IEAEiQATUT82ovdnu6ZndvbvdV6+rru7qZranv/4/vSfaOJ1sXH5dADi2BZe0wFVJp5Kup88HSW8SwMeS7kj6IumXJNb4PZvmAricBENABB/Sc0nP0h98Py3Wv0t6L+mVJH5PojkAEAjBAWFRBGD4zEtJ7Mc6XTQFwC1JryXhMjXqAQAfhH8ycLsmIL0AHklCWy3UCyDzJG4ethzAnh4AaP1BwPiHpLPk0wiSfRtr5eC+m4K9xgoe91pcqhVAJPzbZHoObiEAoQxi6JLzALxuR8xaAHDIC4fR1yREq+AlG4DgkqRYi0J3igAQsB8d5mg9cqlIgXm9piTiIdeTEb8aANLjNydNDgO0VchoH8rAVUsiO13z4qEGwCo+MKfwoLF9kGcJ19oeAE/7+HxZcZcGQnW2YgIrjCq2B8DTvslkYQQoD0HL7GRa3gOA75eVdsmgjTB7vRMK3CELAIIDoKRDaD+fiRV+GjLcKLtYC4AVSJ8kkVIPSVYsjLKfBaDpwQMgsRQ5cmMLAFX1ZiEgJX1qtZ2K1SqiI09YMwCA5wvRUAk7/1kA/hgqi1qOqVqe/dy5BLCWGCCVcoEqiUz0n9YcA5ODePNpdPOFbA2thCdDUytBgNANXimi59jNHAOD0Shnje00Qn42boJd7bTXkzdNCmZWp3eSGL00dcPn9koJes8KrJGpMOmS5F3qfyffN+emUY9TG6uEM5sOdLWRJfNSd5wZAcja9gZbxAQHTJ31E7Dwtnyes8PM1wIARmj7fkWjrHNY650BweFXG8833QJbAbSAyPUjD3cBNBzuMiohrtB2NJpBePaF7wt6ACCgF2iWcaaO10O3ibrRKPYIbFymrNRW21t7xVTuJ9uwv/X9w7/ney0wPJTDauPxHguQkuEXukyJeg6AXCvwVVyrHAREAOhtaN3R+FFe8pXKGL6FIUgRLo/FAciHAEfLfE9NvTvnzrVAFC97X78AsHcVBwds3gJ/AegHsjFN+ivxAAAAAElFTkSuQmCC' height='18'></img></td><td><h2 style='text-align:left;'>Build Cost Breakdown ($,000)</h2></td></tr>
 	</table><br>
 	<charts>
-		<div class='chart-tile' id='build_cost_chart'></div>
+	<canvas id='build_cost_chart' style='height:252px; width:510px; max-width:600px'></canvas>
+	<script>
+		new Chart(document.getElementById('build_cost_chart'), {
+			type: 'doughnut',
+			data: {
+				labels: ["41.8%\tRC Walls & Windows", "15.0%\tFoundations & Substructure", "13.9%\tAmenities", "12.0%\tMEPF Systems", "9.3%\tFlat Roofs", "8.0%\tSite Preparation"],
+				datasets: [{
+					data: [27.0, 9.69, 9.0, 7.75, 6.0, 5.17],
+					backgroundColor: ["#E1E14B", "#D8D8D8", "#96693C", "#C0C0C0", "#E1E1E1", "#F0F0F0"]
+				}]
+			},
+			options: {
+				title: {
+					display: false,
+					text: '',
+					padding: 18,
+					position: 'top',
+					align: 'start',
+					fontFamily: 'Tahoma',
+					fontColor: '#000000',
+					fontSize: 15
+				},
+				legend: {
+					title: {
+						display: true,
+						text: '',
+						padding: 9
+					},
+					position: 'right',
+					align: 'center',
+					labels: {
+						boxWidth: 12,
+						padding: 6,
+						fontFamily: 'Tahoma',
+						fontColor: '#000000',
+						fontSize: 12
+					}
+				},
+				responsive: true,
+				cutoutPercentage: 60
+			}
+		});
+	</script>
 	</charts>
 	</charts>
 </section>
@@ -317,8 +366,94 @@ td {
 		<tr><td width='30px'><img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAA4NJREFUaEPtmI2xDUEQhc+LABEgAkSACBABIkAEiAAR8CJABIgAESACREB9r7pV39n53bqzr265XbV1q+72zPTp3zN7ogOXkwO3X0cA5x3BYwT+1wjcl3RL0nV78MMvSV8kvZP0XtL3HudsnUJ3Jb2QdKXDuDeSnhiwovqWAF5LetBheFQhKrctMtmlWwF4Kwnvu/yWhIc/mnGki6cUejeDbhXEFgCeSXoaDPpkkajl+GNJrLtg6wBxNZdOswGQ69+C8acDaUSBEyEHkV07GwBpQsdBfljHwZu9QiQoeheisBO52QD+hMMpRjw6KqzxmqArvYwbzARAUX6wwyjai6OWm36MAvXDvv9kJoDqwQNgoiNIH9JoEwCx+zy3rjJg945qTMUdp8+MQAQw0n1SkGkn2wwAA4kBhsBxbqx0f9zna+BOZ9vNjEDquUstXlMASNd5ZO8WkVwDAMMu24Z0hZpQdK77ShKFPSKc9Tl0sHvGVoeLmBYIHYCMpe2Q9KA/53o8+pA4l9FZQBv2tskgXLDYngiwAUa0KDChptukkxaA1wwB7/Bia6DhJCZwZK8L7/fUAHyEEEbBEz7OI2tEh8sIB0VJOQ3vSmB5l3NYsYu1IoDxGIBgOB6J3sNTtEsvMvRynsIowDkxc4BEhyfS6TRFqy24BiBOUqgAQEoUOHYK0oSOkwrrIXeeTj3F3ByANQCRSS5IVHI6XsOT3nEWrDHoE0Wi5ro5IHgdnea9uAYgpg9DCANrQorcMYVswSWLaQq5S32rwHe2qQEo8o8Cin1yn570OtOpAYg8vKd/j+p3G1lT7K2BVjFRA1wdvYPUamAvhvsmNQCRRKFfq4P41WFBuOww8p1pzi/5T8R4cM5qac2BWJgcQp7DaXza0t+ZmD4rSkDTu200mOZA0Tc7Tg5lCwApwcbpAAJA7oqYS7V4oyp5mkhQZ8PSAsCGhJuZkNKGeBiDjujsXLhNgdpwHsU3T6KBU5gH6LtzHto5QyB6APiGHMhDuvih5DspUBo6ROmnbQBIgESyF1vvGrq9+kKDYT3fd2L6LL4oGHHzLxe5981ojESguVlGIUYg93nw3CIwAibeyuhq8Cr+g8HGmpleAyNGR92eLrQqfVpUYq3BuXW1OUAjYGhOmQP7BEH3Iuf5hUrjdfo//62W2UW82rDehUcAvZ6apXeMwCzP9u578BH4C3pmvzGxMqViAAAAAElFTkSuQmCC' height='18'></img></td><td><h2 style='text-align:left;'>Building Modularity Analysis</h2></td></tr>
 	</table><br>
 	<div class='row'>
-		<div class='chart-tile' id='modularity_chart0'></div>
-		<div class='chart-tile' id='modularity_chart1'></div>
+	<canvas id='RC Walls & Windows' style='height:270.0px; width:240.0px; max-width:270.0px'></canvas>
+	<script>
+		new Chart(document.getElementById('RC Walls & Windows'), {
+			type: 'doughnut',
+			data: {
+				labels: [["Area 9.0 sqm.", "Border 13.0 m"], ["Area 13.5 sqm.", "Border 15.0 m"]],
+				datasets: [{
+					data: [50.0, 50.0],
+					backgroundColor: '#E1E14B'
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: ['RC Walls & Windows', '27.0 ($,000)'],
+					padding: 18,
+					position: 'top',
+					align: 'start',
+					fontFamily: 'Tahoma',
+					fontColor: '#000000',
+					fontSize: 9
+				},
+				legend: {
+					display: false,
+					title: {
+						display: false,
+						text: '',
+						padding: 9
+					},
+					position: 'right',
+					align: 'center',
+					labels: {
+						boxWidth: 12,
+						padding: 6,
+						fontFamily: 'Tahoma',
+						fontColor: '#000000',
+						fontSize: 12
+					}
+				},
+				responsive: true,
+				cutoutPercentage: 6
+			}
+		});
+	</script>
+	<canvas id='Amenities' style='height:150.0px; width:120.0px; max-width:150.0px'></canvas>
+	<script>
+		new Chart(document.getElementById('Amenities'), {
+			type: 'doughnut',
+			data: {
+				labels: [["Area 6.0 sqm.", "Border 10.0 m"]],
+				datasets: [{
+					data: [100.0],
+					backgroundColor: '#96693C'
+				}]
+			},
+			options: {
+				title: {
+					display: true,
+					text: ['Amenities', '9.0 ($,000)'],
+					padding: 18,
+					position: 'top',
+					align: 'start',
+					fontFamily: 'Tahoma',
+					fontColor: '#000000',
+					fontSize: 9
+				},
+				legend: {
+					display: false,
+					title: {
+						display: false,
+						text: '',
+						padding: 9
+					},
+					position: 'right',
+					align: 'center',
+					labels: {
+						boxWidth: 12,
+						padding: 6,
+						fontFamily: 'Tahoma',
+						fontColor: '#000000',
+						fontSize: 12
+					}
+				},
+				responsive: true,
+				cutoutPercentage: 6
+			}
+		});
+	</script>
 	</div>
 	</datapanel>
 </section>
