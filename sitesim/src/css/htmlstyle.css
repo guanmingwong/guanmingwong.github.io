@@ -10,6 +10,12 @@ h1, h3 {margin: 0px; padding: 18px;}
 h1, h2, h3 {font-weight: bold;}
 p, form {font-size: 12px;}
 
+div.rect {
+	position: relative;
+	width: 30px;
+	height: 15px;
+	border-radius: 3px;}
+
 input, select {
 	width: 100%;
 	padding: 3px;
