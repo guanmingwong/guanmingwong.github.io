@@ -4,7 +4,7 @@
 head, body {background-color: #FFFFFF; font-family: var(--font_family);}
 
 h1 {font-size: 18px;}
-h2 {font-size: 15px;}
+h2 {font-size: 15px; padding: 0px 6px 0px 6px;}
 h3 {font-size: 12px; text-align: right;}
 h1, h3 {margin: 0px; padding: 18px;}
 h1, h2, h3 {font-weight: bold;}
@@ -34,8 +34,8 @@ input:focus {background-color: var(--colorg);}
 .col-equal {float: left; width: 50%;}
 .col-large {float: left; width: 77.5%;}
 .col-small {float: left; width: 22.5%;}
-.col-l {float: left; width: 27.5%;}
-.col-m {float: left; width: 50%;}
+.col-l {float: left; width: 22.5%;}
+.col-m {float: left; width: 55%;}
 .col-r {float: left; width: 22.5%;}
 .chart-tile {float: left; padding-right: 15px;}
 
@@ -44,7 +44,7 @@ header.title {min-height: 180px;}
 
 header, footer, .column, .col-dbl, summary, wide, charts, datapanel {padding: 6px;}
 
-.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-m, .col-r {padding: 6px 12px 6px 0px;}
+.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-m, .col-r {padding: 6px;}
 
 .col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-r {text-align: left;}
 
