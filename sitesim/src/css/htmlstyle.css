@@ -98,6 +98,8 @@ button {
 
 button:hover {background-color: var(--colorg); color: var(--color3);}
 
+button:disabled, button[disabled] {background-color: var(--colorg); color: var(--colorg);}
+
 .slidecontainer {width: 100%;}
 
 .slider {
