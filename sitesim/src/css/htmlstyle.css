@@ -12,9 +12,6 @@ p, form {font-size: 12px;}
 
 div.rect {
 	position: relative;
-/* 	width: 30px; */
-/* 	height: 15px; */
-/* 	border-radius: 3px; */
 	height: 100%;
 	width: 100%;}
 
@@ -31,8 +28,7 @@ input:focus {background-color: var(--colorg);}
 
 .column {float: left; width: 33.33%;}
 .col-dbl {float: left; width: 66.66%;}
-.col-img {float: left; width: 60%;}
-.col-txt {float: left; width: 40%;}
+.col-txt {float: left; width: 25%;}
 .col-equal {float: left; width: 50%;}
 .col-large {float: left; width: 77.5%;}
 .col-small {float: left; width: 22.5%;}
@@ -47,11 +43,11 @@ header.title {min-height: 180px;}
 
 header, footer, .column, .col-dbl, summary, wide, charts, datapanel {padding: 6px;}
 
-.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-m, .col-r {padding: 6px;}
+.col-txt, .col-equal, .col-large, .col-small, .col-l, .col-m, .col-r {padding: 6px;}
 
 .col-gap {padding: 6px 0px;}
 
-.col-img, .col-txt, .col-equal, .col-large, .col-small, .col-l, .col-r {text-align: left;}
+.col-txt, .col-equal, .col-large, .col-small, .col-l, .col-r {text-align: left;}
 
 .col-m, .col-gap {text-align: center;}
 
