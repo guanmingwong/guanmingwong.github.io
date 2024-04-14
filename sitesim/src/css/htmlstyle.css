@@ -38,8 +38,12 @@ input:focus {background-color: var(--colorg);}
 .col-gap {float: left; width: 0.002%;}
 .chart-tile {float: left; padding-right: 15px;}
 
-header {width: 100%; height: 100%;}
-header.title {min-height: 180px;}
+header {
+	background-color: var(--color1);
+	color: #FFFFFF;
+	width: 100%;
+	height: 100%;}
+footer {background-color: var(--color2); color: #FFFFFF;}
 
 header, footer, .column, .col-dbl, summary, wide, charts, datapanel {padding: 6px;}
 
@@ -52,9 +56,6 @@ header, footer, .column, .col-dbl, summary, wide, charts, datapanel {padding: 6p
 .col-m, .col-gap {text-align: center;}
 
 .row {clear: left;}
-
-header {background-color: var(--color1); color: #FFFFFF;}
-footer {background-color: var(--color2); color: #FFFFFF;}
 
 summary {width: 492px;}
 wide {width: 100%;}
