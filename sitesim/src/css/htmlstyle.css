@@ -3,7 +3,7 @@
 
 head, body {background-color: #FFFFFF; font-family: var(--font_family);}
 
-h1 {font-size: 18px;}
+h1 {font-size: 18px; color: #FFFFFF;}
 h2 {font-size: 15px; padding: 0px 6px 0px 6px;}
 h3 {font-size: 12px; text-align: right;}
 h1, h3 {margin: 0px; padding: 18px;}
