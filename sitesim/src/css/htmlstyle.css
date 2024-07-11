@@ -33,6 +33,21 @@ input:focus {background-color: var(--colorg);}
 .col-gap {float: left; width: 0.002%;}
 .chart-tile {float: left; padding-right: 15px;}
 
+.popup {
+	display: none;
+	position: absolute;
+	left: 30px;
+	top: 30px;
+	border: 1px solid var(--color3);
+	border-radius: 3px;
+	padding: 6px;
+	background-color: var(--color3);
+	color: #FFFFFF;
+	text-align: left;
+	font-size: 12px;
+	width: 270px;
+}
+
 header {
 	background-color: var(--color1);
 	color: #FFFFFF;
