@@ -14,9 +14,24 @@ input, select {
 	width: 100%;
 	padding: 3px;
 	border: 1px solid var(--colorg);
-	border-radius: 3px;
 	resize: vertical;
+	font-family: var(--font_family);}
+
+.popup {
+	display: none;
+	position: absolute;
+	left: 30px;
+	top: 30px;
+	width: 270px;
+	padding: 6px;
+	border: 1px solid var(--color1);
+	background-color: var(--color1);
 	font-family: var(--font_family);
+	color: #FFFFFF;
+	text-align: left;}
+
+input, select, .popup {
+	border-radius: 6px;
 	font-size: 12px;}
 
 input:focus {background-color: var(--colorg);}
@@ -32,21 +47,6 @@ input:focus {background-color: var(--colorg);}
 .col-r {float: left; width: 22.5%;}
 .col-gap {float: left; width: 0.002%;}
 .chart-tile {float: left; padding-right: 15px;}
-
-.popup {
-	display: none;
-	position: absolute;
-	left: 30px;
-	top: 30px;
-	border: 1px solid var(--color3);
-	border-radius: 3px;
-	padding: 6px;
-	background-color: var(--color3);
-	color: #FFFFFF;
-	text-align: left;
-	font-size: 12px;
-	width: 270px;
-}
 
 header {
 	background-color: var(--color1);
